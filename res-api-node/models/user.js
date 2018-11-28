@@ -2,6 +2,7 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const mongoose = require("mongoose");
+const _ = require("lodash");
 
 const userSchema = new mongoose.Schema({
    username: {
@@ -50,7 +51,6 @@ const userSchema = new mongoose.Schema({
    },
    website: {
       type: String,
-      required: true,
       minlength: 5,
       maxlength: 100
    },
@@ -91,7 +91,7 @@ function validateUser(user) {
          .max(255)
          .required()
          .email(),
-      contactNumbers: Joi.array.required(),
+      contactNumbers: Joi.array().required(),
       jobTitle: Joi.string()
          .min(5)
          .max(50)

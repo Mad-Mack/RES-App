@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
-const auth = require("../middleware/auth");
 const _ = require("lodash");
-const { User, validate } = require("../models/userModel");
+const { validate } = require("../models/user");
 const userService = require("../services/user");
 
 router.post("/", async (req, res) => {
@@ -15,6 +14,7 @@ router.post("/", async (req, res) => {
 
    try {
       user = await userService.register(req.body);
+      if (user.error) return res.status(400).send(user.error);
       res.send(user);
    } catch (ex) {
       res.status(500).send(ex.message);
@@ -30,10 +30,5 @@ router.post("/", async (req, res) => {
 //       res.status(500).send(ex.message);
 //    }
 // });
-
-// async function userExists(userId) {
-//    const users = await User.find();
-//    return users.find(u => u._id.toString() === userId);
-// }
 
 module.exports = router;
