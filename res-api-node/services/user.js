@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const _ = require("lodash");
 
 async function register(user) {
-   let userToCreate = new User(_.pick(user, ["username", "password", "email", "firstName", "middleName", "lastName", "jobTitle", "website", "contactNumbers"]));
+   const validUserProperties = ["username", "password", "email", "firstName", "middleName", "lastName", "jobTitle", "website", "contactNumbers"];
+   let userToCreate = new User(_.pick(user, validUserProperties));
    const salt = await bcrypt.genSalt();
    userToCreate.password = await bcrypt.hash(user.password, salt);
 
