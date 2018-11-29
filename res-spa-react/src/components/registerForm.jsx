@@ -2,11 +2,23 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class RegisterForm extends Component {
-   state = {};
+   state = {
+      data: {
+         username: "",
+         password: "",
+         email: "",
+         firstName: "",
+         lastName: "",
+         middleName: "",
+         jobTitle: "",
+         website: "",
+         contactNumbers: []
+      }
+   };
    render() {
       return (
          <div className="row">
-            <div className="col-lg-10 col-xl-9 mx-auto">
+            <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                <div className="card card-signin flex-row my-5">
                   <div className="card-img-left d-none d-md-flex" />
                   <div className="card-body">
