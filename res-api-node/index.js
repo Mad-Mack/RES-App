@@ -4,7 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
-const cors = require("./middlewares/cors");
+const cors = require("cors");
 const app = express();
 Joi.objectId = require("joi-objectid")(Joi);
 
@@ -25,9 +25,10 @@ mongoose
    .catch(err => console.error("Could not connect to MongoDB..."));
 
 app.use(express.json());
-app.use(cors);
+// app.use(cors);
+app.use(cors({ credentials: true, origin: true }));
 app.use("/api/users", users);
 app.use("/api/auth", auth);
 
-const port = /*process.env.PORT || */ 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
