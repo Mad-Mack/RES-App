@@ -6,8 +6,12 @@ git pull
 
 How to push to github
 
+git add . (or git add <filename>)
+git commit -m "<commit message>"
 git push origin master
 
 How to push to heroku
 
+git add . (or git add <filename>)
+git commit -m "<commit message>"
 git push heroku master
