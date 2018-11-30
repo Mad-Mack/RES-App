@@ -1,0 +1,13 @@
+How to get latest version
+
+git reset --hard HEAD
+git clean -xffd
+git pull
+
+How to push to github
+
+git push origin master
+
+How to push to heroku
+
+git push heroku master
