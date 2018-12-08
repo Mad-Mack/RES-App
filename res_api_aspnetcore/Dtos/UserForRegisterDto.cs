@@ -9,6 +9,7 @@ namespace res_api_aspnetcore.Dtos
         public string Password { get; set; }
         [Required]
         [MaxLength(50)]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         [MaxLength(50)]

@@ -10,14 +10,14 @@ using res_api_aspnetcore.Data;
 namespace res_api_aspnetcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181205053657_InitialMigration")]
+    [Migration("20181208090227_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -200,6 +200,65 @@ namespace res_api_aspnetcore.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("res_api_aspnetcore.Models.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("About")
+                        .HasMaxLength(2056);
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("res_api_aspnetcore.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CompanyId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("res_api_aspnetcore.Models.Unit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("ProjectId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Units");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -243,6 +302,27 @@ namespace res_api_aspnetcore.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("res_api_aspnetcore.Models.Company", b =>
+                {
+                    b.HasOne("res_api_aspnetcore.Models.ApplicationUser", "User")
+                        .WithMany("Companies")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("res_api_aspnetcore.Models.Project", b =>
+                {
+                    b.HasOne("res_api_aspnetcore.Models.Company", "Company")
+                        .WithMany("Projects")
+                        .HasForeignKey("CompanyId");
+                });
+
+            modelBuilder.Entity("res_api_aspnetcore.Models.Unit", b =>
+                {
+                    b.HasOne("res_api_aspnetcore.Models.Project")
+                        .WithMany("Units")
+                        .HasForeignKey("ProjectId");
                 });
 #pragma warning restore 612, 618
         }

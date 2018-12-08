@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using res_api_aspnetcore.Dtos;
@@ -53,11 +55,18 @@ namespace res_api_aspnetcore.Controllers
 
         }
 
-        [HttpGet, Route("me")]
+        [HttpGet, Route("me"), Authorize]
         public async Task<IActionResult> GetCurrentUser()
         {
-            var user = await _userManager.GetUserAsync(this.User);
-            return Ok(user);
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, _errorService.GetResponseErrors(ex.Message));
+            }
         }
     }
 }

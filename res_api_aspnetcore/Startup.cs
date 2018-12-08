@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using res_api_aspnetcore.Data;
 using res_api_aspnetcore.Models;
 using res_api_aspnetcore.Services;
+using System;
 using System.Text;
 
 namespace res_api_aspnetcore
@@ -27,19 +29,26 @@ namespace res_api_aspnetcore
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddScoped<IErrorService, ErrorService>();
+            services.AddScoped<ICompanyService, CompanyService>();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = Configuration["Jwt:Issuer"],
-                    ValidAudience = Configuration["Jwt:Issuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
+            });
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Default Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -57,7 +66,6 @@ namespace res_api_aspnetcore
             }
 
             app.UseAuthentication();
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

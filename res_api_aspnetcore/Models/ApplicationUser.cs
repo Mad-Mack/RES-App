@@ -17,6 +17,7 @@ namespace res_api_aspnetcore.Models
         public string LastName { get; set; }
         [MaxLength(2000)]
         public string Website { get; set; }
+        public ICollection<Company> Companies { get; set; }
         [NotMapped]
         public string FullName
         {
