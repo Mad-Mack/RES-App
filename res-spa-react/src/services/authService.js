@@ -1,10 +1,8 @@
 import http from "./httpService";
-// import config from "config";
-
-const api = "https://realestateseller-api.herokuapp.com";
+import { apiEndpoint } from "../config/default.json";
 
 function login({ username, password }) {
-   return http.post(`${api}/api/auth`, { username, password });
+   return http.post(`${apiEndpoint}/api/auth/login`, { username, password });
 }
 
 export default { login };

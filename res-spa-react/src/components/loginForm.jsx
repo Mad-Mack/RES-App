@@ -24,7 +24,7 @@ class LoginForm extends Component {
          localStorage.setItem("token", token);
          notify.show("Logged in successfully.", "success");
       } catch (ex) {
-         if (ex.response) notify.show(ex.response.data.error, "error");
+         if (ex.response) notify.show(ex.response.data.errors[0], "error");
          else notify.show(ex.message, "error");
       }
    };

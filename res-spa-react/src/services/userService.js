@@ -1,12 +1,11 @@
 import http from "./httpService";
 import _ from "lodash";
+import { apiEndpoint } from "../config/default.json";
 
 function register(user) {
-   const validUserProperties = ["username", "password", "email", "firstName", "middleName", "lastName", "jobTitle", "website", "contactNumbers"];
+   const validUserProperties = ["userName", "password", "email", "firstName", "middleName", "lastName"];
    const userToCreate = _.pick(user, validUserProperties);
-   return http.post(`${api}/api/users`, userToCreate);
+   return http.post(`${apiEndpoint}/api/users/register`, userToCreate);
 }
 
-module.exports = {
-   register
-};
+export default { register };
