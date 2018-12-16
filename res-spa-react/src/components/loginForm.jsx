@@ -1,76 +1,90 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import authService from "../services/authService";
 import { notify } from "react-notify-toast";
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment
+} from "semantic-ui-react";
+import AppForm from "./common/form";
 
-class LoginForm extends Component {
-   state = {
-      data: {
-         username: "",
-         password: ""
-      },
-      remembered: false
-   };
-   handleInputChange = ({ currentTarget: input }) => {
-      const user = { ...this.state.data };
-      user[input.name] = input.value;
-      this.setState({ data: user });
-   };
+class LoginForm extends AppForm {
+  state = {
+    data: {
+      username: "",
+      password: ""
+    }
+  };
 
-   handleSubmit = async e => {
-      e.preventDefault();
-      try {
-         const { data: token } = await authService.login(this.state.data);
-         localStorage.setItem("token", token);
-         notify.show("Logged in successfully.", "success");
-      } catch (ex) {
-         if (ex.response) notify.show(ex.response.data.errors[0], "error");
-         else notify.show(ex.message, "error");
-      }
-   };
-   render() {
-      const { username, password } = this.state.data;
-      return (
-         <div className="row">
-            <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-               <div className="card card-signin my-5">
-                  <div className="card-body">
-                     <h5 className="card-title text-center">Sign In</h5>
-                     <form className="form-signin" onSubmit={this.handleSubmit}>
-                        <div className="form-label-group">
-                           <input name="username" value={username} onChange={this.handleInputChange} className="form-control" placeholder="Username" autoFocus />
-                        </div>
+  doSubmit = async () => {
+    const { data: token } = await authService.login(this.state.data);
+    localStorage.setItem("token", token);
+    notify.show("Logged in successfully.", "success");
+  };
 
-                        <div className="form-label-group">
-                           <input type="password" name="password" value={password} onChange={this.handleInputChange} className="form-control input-rounded" placeholder="Password" />
-                        </div>
+  render() {
+    const { username, password } = this.state.data;
+    return (
+      <div className="login-form">
+        <Grid textAlign="center" verticalAlign="middle">
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <Header as="h2" color="teal" textAlign="center">
+              Log-in to your account
+            </Header>
+            <Form size="large" onSubmit={this.handleSubmit}>
+              <Segment stacked>
+                <Form.Input
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="Username"
+                  name="username"
+                  value={username}
+                  onChange={this.handleInputChange}
+                />
+                <Form.Input
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={this.handleInputChange}
+                />
 
-                        <div className="custom-control custom-checkbox mb-3">
-                           <input type="checkbox" className="custom-control-input" id="rememberMeCheckbox" />
-                           <label className="custom-control-label" htmlFor="rememberMeCheckbox">
-                              Remember password
-                           </label>
-                        </div>
-                        <button className="btn  btn-primary btn-block text-uppercase" type="submit">
-                           Sign in
-                        </button>
-                        <Link to="/register" className="d-block text-center mt-2 small">
-                           Do not have an account? Register now!
-                        </Link>
-                        <hr className="my-4" />
-                        <button className="btn  btn-google btn-block text-uppercase" type="submit">
-                           <i className="fa fa-google mr-2" /> Sign in with Google
-                        </button>
-                        <button className="btn  btn-facebook btn-block text-uppercase" type="submit">
-                           <i className="fa fa-facebook-f mr-2" /> Sign in with Facebook
-                        </button>
-                     </form>
-                  </div>
-               </div>
-            </div>
-         </div>
-      );
-   }
+                <Button color="teal" fluid size="large">
+                  Login
+                </Button>
+
+                <hr />
+                <Button
+                  circular
+                  color="facebook"
+                  size="large"
+                  icon="facebook f"
+                />
+                <Button circular color="twitter" icon="twitter" size="large" />
+                <Button
+                  circular
+                  color="google plus"
+                  icon="google"
+                  size="large"
+                />
+              </Segment>
+            </Form>
+            <Message>
+              New to us? <Link to="/register">Sign Up!</Link>
+            </Message>
+          </Grid.Column>
+        </Grid>
+      </div>
+    );
+  }
 }
 
 export default LoginForm;

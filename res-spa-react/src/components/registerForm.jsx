@@ -1,94 +1,171 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import userService from "../services/userService";
 import { notify } from "react-notify-toast";
+import AppForm from "./common/form";
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment
+} from "semantic-ui-react";
+import Joi from "joi-browser";
 
-class RegisterForm extends Component {
-   state = {
-      data: {
-         userName: "",
-         password: "",
-         email: "",
-         firstName: "",
-         lastName: "",
-         middleName: ""
-      }
-   };
+class RegisterForm extends AppForm {
+  state = {
+    data: {
+      userName: "",
+      password: "",
+      email: "",
+      firstName: "",
+      lastName: "",
+      middleName: "",
+      confirmPassword: ""
+    },
+    errors: {}
+  };
 
-   handleInputChange = ({ currentTarget: input }) => {
-      const user = { ...this.state.data };
-      user[input.name] = input.value;
-      this.setState({ data: user });
-   };
+  schema = {
+    userName: Joi.string()
+      .required()
+      .min(2)
+      .max(50)
+      .label("Username"),
+    password: Joi.string()
+      .required()
+      .label("Password"),
+    confirmPassword: Joi.string().required(),
+    email: Joi.string()
+      .email()
+      .required()
+      .label("Email"),
+    firstName: Joi.string()
+      .required()
+      .label("First Name"),
+    lastName: Joi.string()
+      .required()
+      .label("Last Name"),
+    middleName: Joi.string()
+      .optional()
+      .allow("")
+      .required()
+      .label("Middle Name")
+  };
 
-   handleSubmit = async e => {
-      e.preventDefault();
-      try {
-         const { data: createdUser } = await userService.register(this.state.data);
-         console.log(createdUser);
-         notify.show("Registered successfully.", "success");
-         this.props.history.push("/login");
-      } catch (ex) {
-         if (ex.response) notify.show(ex.response.data.errors[0], "error");
-         else notify.show(ex.message, "error");
-      }
-   };
+  doSubmit = async () => {
+    if (this.state.data.password !== this.state.data.confirmPassword)
+      return notify.show("Please fill out the fields properly.", "error");
+    await userService.register(this.state.data);
+    notify.show("Registered successfully.", "success");
+    this.props.history.push("/login");
+  };
 
-   render() {
-      const { data: user } = this.state;
-      return (
-         <div className="row">
-            <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-               <div className="card card-signin flex-row my-5">
-                  <div className="card-img-left d-none d-md-flex" />
-                  <div className="card-body">
-                     <h5 className="card-title text-center">Register</h5>
-                     <form className="form-signin" onSubmit={this.handleSubmit}>
-                        <div className="form-label-group">
-                           <input type="text" name="userName" className="form-control" placeholder="Username" value={user.userName} onChange={this.handleInputChange} />
-                        </div>
+  render() {
+    const { data: user } = this.state;
+    return (
+      <div className="register-form">
+        <Grid textAlign="center" verticalAlign="middle">
+          <Grid.Column style={{ maxWidth: 900 }}>
+            <Header as="h2" color="teal" textAlign="center">
+              Create an account
+            </Header>
+            <Form size="large" onSubmit={this.handleSubmit} error>
+              <Segment stacked>
+                <Form.Group widths="equal">
+                  <Form.Input
+                    fluid
+                    name="firstName"
+                    value={user.firstName}
+                    onChange={this.handleInputChange}
+                    label="First Name"
+                    placeholder="First Name"
+                    error={!!this.state.errors["firstName"]}
+                  />
 
-                        <div className="form-label-group">
-                           <input type="email" name="email" className="form-control" placeholder="Email address" value={user.email} onChange={this.handleInputChange} />
-                        </div>
-                        <div className="form-label-group">
-                           <input type="text" name="firstName" className="form-control" placeholder="First Name" value={user.firstName} onChange={this.handleInputChange} />
-                        </div>
-                        <div className="form-label-group">
-                           <input type="text" name="lastName" className="form-control" placeholder="Last Name" value={user.lastName} onChange={this.handleInputChange} />
-                        </div>
-                        <div className="form-label-group">
-                           <input type="text" name="middleName" className="form-control" placeholder="Middle Name" value={user.middleName} onChange={this.handleInputChange} />
-                        </div>
-
-                        <div className="form-label-group">
-                           <input type="password" name="password" className="form-control" placeholder="Password" value={user.password} onChange={this.handleInputChange} />
-                        </div>
-
-                        {/* <div className="form-label-group">
-                           <input type="password" name="confirmPassword" className="form-control" placeholder="Confirm Password" />
-                        </div> */}
-
-                        <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
-                           Register
-                        </button>
-                        <Link to="/login" className="d-block text-center mt-2 small">
-                           Sign In
-                        </Link>
-                        <hr className="my-4" />
-                        <button className="btn btn-lg btn-google btn-block text-uppercase" type="submit">
-                           <i className="fa fa-google mr-2" /> Sign up with Google
-                        </button>
-                        <button className="btn btn-lg btn-facebook btn-block text-uppercase" type="submit">
-                           <i className="fa fa-facebook-f mr-2" /> Sign up with Facebook
-                        </button>
-                     </form>
+                  <Form.Input
+                    fluid
+                    name="middleName"
+                    value={user.middleName}
+                    onChange={this.handleInputChange}
+                    label="Middle Name"
+                    placeholder="Middle Name"
+                    error={!!this.state.errors["middleName"]}
+                  />
+                  <Form.Input
+                    fluid
+                    label="Last Name"
+                    placeholder="Last Name"
+                    name="lastName"
+                    value={user.lastName}
+                    onChange={this.handleInputChange}
+                    error={!!this.state.errors["lastName"]}
+                  />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Input
+                    fluid
+                    label="Username"
+                    placeholder="Username"
+                    name="userName"
+                    value={user.userName}
+                    onChange={this.handleInputChange}
+                    error={!!this.state.errors["userName"]}
+                  />
+                  <Form.Input
+                    fluid
+                    label="Email"
+                    placeholder="Email"
+                    name="email"
+                    value={user.email}
+                    onChange={this.handleInputChange}
+                    error={!!this.state.errors["email"]}
+                  />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Input
+                    fluid
+                    label="Password"
+                    name="password"
+                    value={user.password}
+                    onChange={this.handleInputChange}
+                    placeholder="Password"
+                    type="password"
+                    error={!!this.state.errors["password"]}
+                  />
+                  <Form.Input
+                    fluid
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    value={user.confirmPassword}
+                    onChange={this.handleInputChange}
+                    placeholder="Confirm Password"
+                    type="password"
+                    error={
+                      this.state.data.password !==
+                      this.state.data.confirmPassword
+                    }
+                  />
+                </Form.Group>
+                <hr />
+                <div className="row">
+                  <div className="col-11 ml-auto mr-auto">
+                    <Button color="teal" fluid size="large">
+                      Register
+                    </Button>
                   </div>
-               </div>
-            </div>
-         </div>
-      );
-   }
+                </div>
+              </Segment>
+            </Form>
+            <Message>
+              Already have an account? <Link to="/login"> Login</Link>
+            </Message>
+          </Grid.Column>
+        </Grid>
+      </div>
+    );
+  }
 }
 
 export default RegisterForm;
