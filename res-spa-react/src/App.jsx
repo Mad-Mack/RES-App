@@ -1,19 +1,23 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import LoginForm from "./components/loginForm";
-import RegisterForm from "./components/registerForm";
+import LoginForm from "./components/login/loginForm";
+import RegisterForm from "./components/register/registerForm";
 import Notifications from "react-notify-toast";
-import Home from "./components/home";
+import Home from "./components/home/home";
+import NavBar from "./components/navBar/navBar";
 
 class App extends Component {
   render() {
     return (
       <div>
+        <NavBar />
         <Notifications />
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/login" component={LoginForm} />
-          <Route path="/register" component={RegisterForm} />
+          <div className="container">
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={LoginForm} />
+            <Route path="/register" component={RegisterForm} />
+          </div>
         </Switch>
       </div>
     );

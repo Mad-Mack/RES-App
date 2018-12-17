@@ -1,38 +1,15 @@
-.login-form {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  padding-top: 250px;
-  padding-bottom: 250px;
-  background-color: #ececec;
+@import "../node_modules/bootswatch/dist/litera/bootstrap.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "../src/components/login/loginForm.css";
+
+.bg-primary {
+  background-color: #00a3a3 !important;
 }
 
-.register-form {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  padding-top: 250px;
-  padding-bottom: 250px;
-  background-color: #ececec;
+.btn-primary {
+  background-color: #00a3a3 !important;
+  border: #00a3a3;
 }
-
-.home {
-  color: #fff;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  padding-top: 50px;
-  padding-bottom: 250px;
-  background-color: #009488;
-}
-
-.home-icon {
-  cursor: pointer;
-  padding: 20px;
-}
-
-div.home-icon:hover {
-  border-radius: 5rem;
-  background-color: #fff;
-  color: #009488;
+.btn-primary:hover {
+  border: #00a3a3;
 }
