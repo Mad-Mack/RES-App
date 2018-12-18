@@ -7,21 +7,21 @@ import Home from "./components/home/home";
 import NavBar from "./components/navBar/navBar";
 
 class App extends Component {
-  render() {
-    return (
-      <div>
-        <NavBar />
-        <Notifications />
-        <Switch>
-          <div className="container">
-            <Route path="/" exact component={Home} />
-            <Route path="/login" component={LoginForm} />
-            <Route path="/register" component={RegisterForm} />
-          </div>
-        </Switch>
-      </div>
-    );
-  }
+   render() {
+      return (
+         <div>
+            <NavBar />
+            <Notifications />
+            <div className="container">
+               <Switch>
+                  <Route path="/" exact component={Home} />
+                  <Route path="/login" component={LoginForm} />
+                  <Route path="/register" component={RegisterForm} />
+               </Switch>
+            </div>
+         </div>
+      );
+   }
 }
 
 export default App;
