@@ -2,26 +2,30 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import LoginForm from "./components/login/loginForm";
 import RegisterForm from "./components/register/registerForm";
-import Notifications from "react-notify-toast";
 import Home from "./components/home/home";
-import NavBar from "./components/navBar/navBar";
+import { ToastContainer } from "react-toastify";
+import Dashboard from "./components/shell";
 
 class App extends Component {
-   render() {
-      return (
-         <div>
-            <NavBar />
-            <Notifications />
-            <div className="container">
-               <Switch>
-                  <Route path="/" exact component={Home} />
-                  <Route path="/login" component={LoginForm} />
-                  <Route path="/register" component={RegisterForm} />
-               </Switch>
-            </div>
-         </div>
-      );
-   }
+  state = {
+    user: {}
+  };
+  render() {
+    return (
+      <div>
+        <Dashboard user={this.state.user}>
+          <div className="container">
+            <ToastContainer />
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/login" component={LoginForm} />
+              <Route path="/register" component={RegisterForm} />
+            </Switch>
+          </div>
+        </Dashboard>
+      </div>
+    );
+  }
 }
 
 export default App;

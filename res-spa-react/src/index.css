@@ -1,7 +1,7 @@
 @import "../node_modules/bootswatch/dist/litera/bootstrap.min.css";
 @import "../node_modules/font-awesome/css/font-awesome.min.css";
 @import "../src/components/login/loginForm.css";
-
+@import "../node_modules/react-toastify/dist/ReactToastify.min.css";
 .bg-primary {
   background-color: #00a3a3 !important;
 }
@@ -12,4 +12,10 @@
 }
 .btn-primary:hover {
   border: #00a3a3;
+}
+
+button:focus,
+button:active {
+  outline: none !important;
+  box-shadow: none;
 }
