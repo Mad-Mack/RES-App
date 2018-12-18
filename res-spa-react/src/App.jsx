@@ -4,7 +4,7 @@ import LoginForm from "./components/login/loginForm";
 import RegisterForm from "./components/register/registerForm";
 import Home from "./components/home/home";
 import { ToastContainer } from "react-toastify";
-import Dashboard from "./components/shell";
+import Shell from "./components/navigation/shell";
 
 class App extends Component {
   state = {
@@ -13,7 +13,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Dashboard user={this.state.user}>
+        <Shell user={this.state.user}>
           <div className="container">
             <ToastContainer />
             <Switch>
@@ -22,7 +22,7 @@ class App extends Component {
               <Route path="/register" component={RegisterForm} />
             </Switch>
           </div>
-        </Dashboard>
+        </Shell>
       </div>
     );
   }
