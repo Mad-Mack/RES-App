@@ -14,8 +14,8 @@ const NavBar = ({ classNames, open, user, onDrawerOpen, logOut }) => {
           </IconButton>
         ) : null}
         <Typography variant="h6" color="inherit" noWrap>
-          {user ? (
-            <Link to="/" className="navbar-brand" style={{ color: "#fff" }}>
+          {user && !open ? (
+            <Link to="/" className="navbar-brand" style={{ color: "#fff", marginRight: "80px" }}>
               <Logo />
             </Link>
           ) : (
