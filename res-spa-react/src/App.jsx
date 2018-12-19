@@ -1,25 +1,61 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import LoginForm from "./components/login/loginForm";
 import RegisterForm from "./components/register/registerForm";
 import Home from "./components/home/home";
 import { ToastContainer } from "react-toastify";
 import Shell from "./components/navigation/shell";
+import toastService from "./services/toastService";
 
 class App extends Component {
   state = {
-    user: {}
+    user: null
+  };
+
+  componentDidMount() {
+    const user = localStorage.getItem("token");
+    this.setState({ user });
+  }
+
+  getUser = () => {
+    this.setState({ user: {} });
+  };
+
+  logOut = () => {
+    localStorage.removeItem("token");
+    this.setState({ user: null });
+    toastService.success("Logout successfully");
   };
   render() {
+    const { user } = this.state;
     return (
       <div>
-        <Shell user={this.state.user}>
+        <Shell user={user} logOut={this.logOut}>
           <div className="container">
             <ToastContainer />
             <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/login" component={LoginForm} />
-              <Route path="/register" component={RegisterForm} />
+              <Route
+                path="/"
+                exact
+                render={props => {
+                  if (!user) return <Redirect to="/login" />;
+                  return <Home getUser={this.getUser} {...props} />;
+                }}
+              />
+              <Route
+                path="/login"
+                render={props => {
+                  if (user) return <Redirect to="/" />;
+                  return <LoginForm getUser={this.getUser} {...props} />;
+                }}
+              />
+              <Route
+                path="/register"
+                render={props => {
+                  if (user) return <Redirect to="/" />;
+                  return <RegisterForm {...props} />;
+                }}
+              />
             </Switch>
           </div>
         </Shell>

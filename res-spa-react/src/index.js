@@ -8,6 +8,9 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 
 const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true
+  },
   palette: {
     primary: teal,
     secondary: {

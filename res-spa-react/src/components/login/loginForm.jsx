@@ -12,9 +12,10 @@ class LoginForm extends AppForm {
   };
 
   doSubmit = async () => {
-    const { data: token } = await authService.login(this.state.data);
-    localStorage.setItem("token", token);
+    const { data: result } = await authService.login(this.state.data);
+    localStorage.setItem("token", result.token);
     toastService.success("Logged in successfully.");
+    this.props.getUser();
   };
 
   render() {
@@ -22,8 +23,8 @@ class LoginForm extends AppForm {
     return (
       <div id="login-form" style={{ marginTop: "150px" }}>
         <div className="row">
-          <div class="col-md-5 ml-auto mr-auto">
-            <div class="text-center">
+          <div className="col-md-5 ml-auto mr-auto">
+            <div className="text-center">
               <h2>Login</h2>
               <hr />
             </div>
