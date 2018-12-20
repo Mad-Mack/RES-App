@@ -103,7 +103,7 @@ class Shell extends React.Component {
           logOut={this.props.logOut}
           onDrawerOpen={this.handleDrawerOpen}
         />
-        {this.props.user ? <SideBar classes={classes} open={this.state.open} theme={theme} onDrawerClose={this.handleDrawerClose} /> : null}
+        {this.props.user ? <SideBar classes={classes} open={this.state.open} theme={theme} onDrawerClose={this.handleDrawerClose} user={this.props.user} /> : null}
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {this.props.children}

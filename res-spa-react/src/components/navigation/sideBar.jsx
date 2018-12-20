@@ -7,30 +7,30 @@ import menuItemService from "../../services/menuItemService";
 import SummarizedUserProfile from "../common/summarizedUserProfile";
 import MenuList from "./menuList";
 
-const SideBar = ({ classes, open, theme, onDrawerClose }) => {
-   return (
-      <Drawer
-         variant="temporary"
-         className={classNames(classes.drawer, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open
-         })}
-         classes={{
-            paper: classNames({
-               [classes.drawerOpen]: open,
-               [classes.drawerClose]: !open
-            })
-         }}
-         open={open}
-      >
-         <div className={classes.toolbar}>
-            <IconButton onClick={onDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
-         </div>
-         <SummarizedUserProfile imageUrl={""} name={"Test Name"} />
-         <Divider />
-         <MenuList menuItems={menuItemService.getAll()} />
-      </Drawer>
-   );
+const SideBar = ({ classes, open, theme, onDrawerClose, user }) => {
+  return (
+    <Drawer
+      variant="temporary"
+      className={classNames(classes.drawer, {
+        [classes.drawerOpen]: open,
+        [classes.drawerClose]: !open
+      })}
+      classes={{
+        paper: classNames({
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open
+        })
+      }}
+      open={open}
+    >
+      <div className={classes.toolbar}>
+        <IconButton onClick={onDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
+      </div>
+      <SummarizedUserProfile imageUrl={""} name={user.unique_name} />
+      <Divider />
+      <MenuList menuItems={menuItemService.getAll()} />
+    </Drawer>
+  );
 };
 
 export default SideBar;
