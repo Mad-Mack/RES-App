@@ -15,7 +15,6 @@ import classNames from "classnames";
 import React from "react";
 
 const SideBar = ({ classes, open, theme, onDrawerClose }) => {
-   console.log({ test: window.location.href });
    return (
       <Drawer
          variant="temporary"
