@@ -34,22 +34,16 @@ const SideBar = ({ classes, open, theme, onDrawerClose }) => {
          <div className={classes.toolbar}>
             <IconButton onClick={onDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
          </div>
-         <div className="row">
-            <div className="col-sm-12 ml-auto mr-auto text-center">
-               <AccountCircleIcon color="primary" style={{ fontSize: "7rem" }} />
-            </div>
+         <div className=" ml-auto mr-auto text-center">
+            <AccountCircleIcon color="primary" style={{ fontSize: "7rem" }} />
          </div>
-         <div className="row">
-            <div className="col-sm-12 ml-auto mr-auto text-center">
-               <h4>Test Name</h4>
-            </div>
+         <div className=" ml-auto mr-auto text-center">
+            <h4>Test Name</h4>
          </div>
-         <div className="row">
-            <div className="col-sm-12 ml-auto mr-auto text-center" style={{ marginBottom: "20px" }}>
-               <Button color="primary" className={classes.button}>
-                  Edit Profile
-               </Button>
-            </div>
+         <div className=" ml-auto mr-auto text-center" style={{ marginBottom: "20px" }}>
+            <Button color="primary" className={classes.button}>
+               Edit Profile
+            </Button>
          </div>
          <Divider />
          <List>
