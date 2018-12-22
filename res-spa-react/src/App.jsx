@@ -1,12 +1,13 @@
+import { withSnackbar } from "notistack";
 import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
-import jwtDecode from "jwt-decode";
-import { ToastContainer } from "react-toastify";
-import LoginForm from "./components/login/loginForm";
-import RegisterForm from "./components/register/registerForm";
+import { Redirect, Route, Switch } from "react-router-dom";
+import Companies from "./components/companies/companies";
 import Home from "./components/home/home";
+import LoginForm from "./components/login/loginForm";
 import Shell from "./components/navigation/shell";
-import toastService from "./services/toastService";
+import RegisterForm from "./components/register/registerForm";
+import authService from "./services/authService";
+import { catchGlobalUnexpectedErrors } from "./services/httpService";
 
 class App extends Component {
   state = {
@@ -16,21 +17,28 @@ class App extends Component {
 
   componentDidMount() {
     this.getUser();
+
+    catchGlobalUnexpectedErrors(() => {
+      this.props.enqueueSnackbar("An unexpected error has occurred.", {
+        variant: "error"
+      });
+    });
   }
 
   handleLoadingStatus = status => this.setState({ loading: true });
 
   getUser = () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    const user = jwtDecode(token);
+    const user = authService.getCurrentUserFromJwt();
     this.setState({ user });
   };
 
   logOut = () => {
-    localStorage.removeItem("token");
+    const { enqueueSnackbar } = this.props;
+    authService.logOut();
     this.setState({ user: null });
-    toastService.success("Logout successfully");
+    enqueueSnackbar("Logout successfully", {
+      variant: "success"
+    });
   };
   render() {
     const { user } = this.state;
@@ -38,7 +46,6 @@ class App extends Component {
       <div>
         <Shell user={user} logOut={this.logOut}>
           <div className="container">
-            <ToastContainer />
             <Switch>
               <Route
                 path="/"
@@ -62,6 +69,13 @@ class App extends Component {
                   return <RegisterForm {...props} isLoading={this.state.isLoading} onLoad={this.handleLoadingStatus} />;
                 }}
               />
+              <Route
+                path="/companies"
+                render={props => {
+                  if (!user) return <Redirect to="/" />;
+                  return <Companies {...props} isLoading={this.state.isLoading} onLoad={this.handleLoadingStatus} />;
+                }}
+              />
             </Switch>
           </div>
         </Shell>
@@ -70,4 +84,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withSnackbar(App);

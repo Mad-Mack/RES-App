@@ -72,7 +72,7 @@ const styles = theme => ({
 
 class Shell extends React.Component {
   state = {
-    open: false
+    open: true
   };
 
   handleDrawerOpen = () => {

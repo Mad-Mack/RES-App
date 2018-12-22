@@ -1,5 +1,6 @@
 import teal from "@material-ui/core/colors/teal";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
@@ -14,10 +15,7 @@ const theme = createMuiTheme({
   palette: {
     primary: teal,
     secondary: {
-      light: "#FAFAFA",
-      main: "#F5F5F5",
-      dark: "#EEEEEE",
-      contrastText: teal
+      main: "#424242"
     }
   }
 });
@@ -25,7 +23,15 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <BrowserRouter>
     <MuiThemeProvider theme={theme}>
-      <App />
+      <SnackbarProvider
+        maxSnack={3}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center"
+        }}
+      >
+        <App />
+      </SnackbarProvider>
     </MuiThemeProvider>
   </BrowserRouter>,
   document.getElementById("root")

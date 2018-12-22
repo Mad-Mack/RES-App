@@ -6,7 +6,7 @@ import Logo from "../common/logo";
 
 const NavBar = ({ classNames, open, user, onDrawerOpen, logOut }) => {
   return (
-    <AppBar position="fixed" className={classNames.appBar}>
+    <AppBar position="fixed" className={classNames.appBar} style={!open && !user ? { width: "100%" } : null} color="primary">
       <Toolbar disableGutters={!open}>
         {user ? (
           <IconButton color="inherit" aria-label="Open drawer" onClick={onDrawerOpen} className={classNames.iconButton}>

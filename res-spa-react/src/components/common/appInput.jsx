@@ -17,7 +17,7 @@ const AppInput = ({ path, value, label, outlined, error, icon, ...props }) => {
           label={label}
           name={path}
           value={value}
-          margin="normal"
+          margin="dense"
           variant={outlined ? "outlined" : "standard"}
           {...props}
         />

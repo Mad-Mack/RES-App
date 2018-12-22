@@ -12,11 +12,12 @@
     "joi-browser": "^13.4.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
+    "notistack": "^0.4.1",
     "react": "^16.6.3",
+    "react-device-detect": "^1.6.1",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
-    "react-toastify": "^4.5.0",
     "reactstrap": "^6.5.0"
   },
   "scripts": {

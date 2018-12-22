@@ -10,7 +10,7 @@ import MenuList from "./menuList";
 const SideBar = ({ classes, open, theme, onDrawerClose, user }) => {
   return (
     <Drawer
-      variant="temporary"
+      variant="permanent"
       className={classNames(classes.drawer, {
         [classes.drawerOpen]: open,
         [classes.drawerClose]: !open
@@ -26,7 +26,7 @@ const SideBar = ({ classes, open, theme, onDrawerClose, user }) => {
       <div className={classes.toolbar}>
         <IconButton onClick={onDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
       </div>
-      <SummarizedUserProfile imageUrl={""} name={user.unique_name} />
+      <SummarizedUserProfile imageUrl={""} name={user.unique_name} open={open} />
       <Divider />
       <MenuList menuItems={menuItemService.getAll()} />
     </Drawer>
